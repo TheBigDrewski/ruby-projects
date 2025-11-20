@@ -4,13 +4,9 @@ class Game
     def initialize()
         @game_over = false
         @wrong_guesses = Array.new()
-        @word_list = File.read('words.txt').split("\n")
-        @word = self.generate_word
+        @word_list = File.readlines("words.txt").select { |word| word.length.between?(5,12) }.map(&:chomp)
+        @word = @word_list[rand(0..@word_list.length - 1)]
         @user_word = "_" * @word.length
-    end
-
-    def generate_word()
-        return @word_list[rand(0..@word_list.length - 1)]
     end
 
     def is_game_over?(guess)

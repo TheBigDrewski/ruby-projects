@@ -4,7 +4,6 @@ game = Game.new()
 
 puts "Welcome to Hangman!"
 puts "Current word: " + ("_" * game.word.length)
-puts game.word
 
 while !game.game_over
     puts "Enter your guess:"
