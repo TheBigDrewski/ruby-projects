@@ -1,3 +1,5 @@
+require 'yaml'
+
 class Game
     attr_accessor :game_over, :wrong_guesses, :word_list, :word, :user_word
 
@@ -59,5 +61,31 @@ class Game
             puts " /|\\ "
             puts " / \\ "
         end
+    end
+
+    def load_game(game_file)
+        saved_game = File.open(game_file, "r") { |file| YAML.load(file)}
+        @word = saved_game[:word]
+        @user_word = saved_game[:user_word]
+        @wrong_guesses = saved_game[:wrong_guesses]
+    end
+
+    def save_game()
+        count = 0
+        if Dir.exist?("save-files")
+           file_count = Dir.children("save-files").length
+        else
+            Dir.mkdir("save-files")
+            file_count = 0
+        end
+        new_save = File.new("save-files/Save#{file_count + 1}.yaml", "w")
+        new_save.write(YAML.dump({
+            :word => @word,
+            :user_word => @user_word,
+            :wrong_guesses => @wrong_guesses
+        }))
+        new_save.close
+        puts "Game saved as 'Save#{file_count + 1}.yaml'. Exiting game."
+        @game_over = true
     end
 end
